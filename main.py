@@ -10,6 +10,7 @@ from pygame import mixer
 import time
 from cryptography.fernet import Fernet
 # Create the Tkinter window
+
 window = ctk.CTk()
 mainaudio=None
 maintextfile=None   
@@ -18,7 +19,10 @@ window.geometry("900x600")
 window.title("Data Encrypter")
 customtkinter.set_appearance_mode("dark")
 
-window.iconbitmap(r"C:\Users\pruth\Downloads\protection_shield_security_secured_padlock_icon_225158.ico")
+current_dir = os.path.dirname(__file__)
+icon_path1 = os.path.join(current_dir, "assets", "protection_shield_security_secured_padlock_icon_225158 (1).ico")
+
+window.iconbitmap(icon_path1)
 # Create widgets from the customtkinter module
 label = ctk.CTkLabel(window, text="Hello, Custom Tkinter!")
 label.pack(pady=10)
@@ -26,57 +30,54 @@ label.pack(pady=10)
 for widget in window.winfo_children():
         widget.configure(text_color='red')
 
-image_path = r"C:\Users\pruth\Downloads\ic_photo_128_28568.png"
+image_path = os.path.join(current_dir, "assets","ic_photo_128_28568.png")
 if os.path.exists(image_path):
     image = Image.open(image_path)
     photo = ImageTk.PhotoImage(image)
-image_path1=r"C:\Users\pruth\Downloads\video_284_34299 (2).png"
+image_path1= os.path.join(current_dir, "assets","video_284_34299 (2).png")
 if os.path.exists(image_path1):
     image1 = Image.open(image_path1)
     photo1 = ImageTk.PhotoImage(image1)
-image_path2=r"C:\Users\pruth\Downloads\music_audio_7173.png"
+image_path2= os.path.join(current_dir, "assets","music_audio_7173.png")
 if os.path.exists(image_path2):
     image2 = Image.open(image_path2)
     photo2 = ImageTk.PhotoImage(image2)
 
-image_path3=r"C:\Users\pruth\Downloads\documentediting_editdocuments_text_documentedi_2820.png"
+image_path3= os.path.join(current_dir, "assets","documentediting_editdocuments_text_documentedi_2820.png" )
 if os.path.exists(image_path3):
     image3 = Image.open(image_path3)
     photo3 = ImageTk.PhotoImage(image3)
     
-encryptimg1=r"C:\Users\pruth\Downloads\encryption.png"  
+encryptimg1=os.path.join(current_dir, "assets","encryption.png")
 if os.path.exists(encryptimg1):
     encimage = Image.open(encryptimg1)
     encimage1 = ImageTk.PhotoImage(encimage)
     
-decrypt=r"C:\Users\pruth\Downloads\decryption.png"
+decrypt=os.path.join(current_dir, "assets","decryption.png")
 if os.path.exists(decrypt):
     decimage = Image.open(decrypt)
     decimage1 = ImageTk.PhotoImage(decimage)
 
-musicpng=r"C:\Users\pruth\Downloads\music_audio_7173 (1).png"  
+musicpng=os.path.join(current_dir, "assets","music_audio_7173 (1).png")
 if os.path.exists(musicpng):
     musicpng = Image.open(musicpng)
     musicpng = ImageTk.PhotoImage(musicpng)
 
-startpng=r"C:\Users\pruth\Downloads\pngegg.png"  
+startpng=os.path.join(current_dir, "assets","pngegg.png")
 if os.path.exists(startpng):
     startpng= Image.open(startpng)
     startpng=startpng.resize((50,50))
     startpng= ImageTk.PhotoImage(startpng)
 
-    
-    
-    
-    
-pausepng=r"C:\Users\pruth\Downloads\pngwing.com (3).png"    
+        
+pausepng=os.path.join(current_dir, "assets","pngwing.com (3).png")
 if os.path.exists(pausepng):
     pausepng = Image.open(pausepng)
     pausepng = pausepng.resize((50, 50))
     pausepng = ImageTk.PhotoImage(pausepng)
 
 
-stoppng=r"C:\Users\pruth\Downloads\pngwing.com (2).png"
+stoppng=os.path.join(current_dir, "assets","pngwing.com (2).png")
 if os.path.exists(stoppng):
     stoppng = Image.open(stoppng)
     stoppng=stoppng.resize((50,50))
