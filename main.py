@@ -23,9 +23,8 @@ current_dir = os.path.dirname(__file__)
 icon_path1 = os.path.join(current_dir, "assets", "protection_shield_security_secured_padlock_icon_225158 (1).ico")
 
 window.iconbitmap(icon_path1)
-# Create widgets from the customtkinter module
-label = ctk.CTkLabel(window, text="Hello, Custom Tkinter!")
-label.pack(pady=10)
+
+
 
 for widget in window.winfo_children():
         widget.configure(text_color='red')
@@ -64,23 +63,27 @@ if os.path.exists(musicpng):
     musicpng = ImageTk.PhotoImage(musicpng)
 
 startpng=os.path.join(current_dir, "assets","pngegg.png")
-if os.path.exists(startpng):
-    startpng= Image.open(startpng)
-    startpng=startpng.resize((50,50))
-    startpng= ImageTk.PhotoImage(startpng)
 
+
+if os.path.exists(startpng):
+    
+    startpng= Image.open(startpng)
+    startpng=startpng.resize((25,25))
+    
+    startpng= ImageTk.PhotoImage(startpng)
+   
         
 pausepng=os.path.join(current_dir, "assets","pngwing.com (3).png")
 if os.path.exists(pausepng):
     pausepng = Image.open(pausepng)
-    pausepng = pausepng.resize((50, 50))
+    pausepng = pausepng.resize((25, 25))
     pausepng = ImageTk.PhotoImage(pausepng)
 
 
 stoppng=os.path.join(current_dir, "assets","pngwing.com (2).png")
 if os.path.exists(stoppng):
     stoppng = Image.open(stoppng)
-    stoppng=stoppng.resize((50,50))
+    stoppng=stoppng.resize((25,25))
     stoppng = ImageTk.PhotoImage(stoppng)
     
 def textframe():
@@ -128,17 +131,33 @@ def switch_event():
     response = switch_var.get()
     if response == "on":
         customtkinter.set_appearance_mode("light")
-        framebutton1.configure(text_color="black")
-        framebutton2.configure(text_color="black")
-        framebutton3.configure(text_color="black")
-        framebutton4.configure(text_color="black")
+        buttons = [
+            framebutton1, framebutton2, framebutton3, framebutton4, 
+            filedialog1, clearbutton, encbutton, decbutton, 
+            filedialog2, clearbutton2, encbutton2, decbutton2, 
+            filedialog3, vidplaybtn44, clearbutton3, encbutton3, decbutton3, 
+            filedialog4, clearbutton4, encbutton4, decbutton4, 
+            stopbtn, unstopbtn, audioplay1,filedialog1,framebutton1,framebutton2,
+            framebutton3,framebutton4
+        ]
+        for button in buttons:
+            button.configure(text_color="black")
+        customtkinter.set_appearance_mode("light")
         switch.configure(text="Dark Mode")
     elif response == "off":
+        
+        buttons = [
+            framebutton1, framebutton2, framebutton3, framebutton4, 
+            filedialog1, clearbutton, encbutton, decbutton, 
+            filedialog2, clearbutton2, encbutton2, decbutton2, 
+            filedialog3, vidplaybtn44, clearbutton3, encbutton3, decbutton3, 
+            filedialog4, clearbutton4, encbutton4, decbutton4, 
+            stopbtn, unstopbtn, audioplay1,filedialog1,framebutton1,framebutton2,
+            framebutton3,framebutton4
+        ]
+        for button in buttons:
+            button.configure(text_color="white")
         customtkinter.set_appearance_mode("dark")
-        framebutton1.configure(text_color="white")
-        framebutton2.configure(text_color="white")
-        framebutton3.configure(text_color="white")
-        framebutton4.configure(text_color="white")
         switch.configure(text="Light Mode")
 
 def clearselection():
@@ -201,30 +220,27 @@ def selectaudio1():
         audioplay1.place(x=20,y=400)
         label3.configure(text=audiofile)
         label3.place(x=70,y=300)
-        
-        
 
-    
-      
-        
-    
-        
-        
-    
-    
-        
-        
-        
-                                                         
-mainvideofile1=None                                                      
+
+
+mainvideofile1=None          
+
 def selectvideo():
     global mainvideofile1
+    global cap
     videofile= filedialog.askopenfilename(filetypes=[("Video", "*.mp4")])
     mainvideofile1=videofile
-    if os.path.exists(videofile):
+    label4.configure(text=mainvideofile1)
+    if videofile:
+        cap = cv2.VideoCapture(videofile)
+   
+    
+   
+
+    # if os.path.exists(videofile):
         
-        label4.configure(text=videofile)
-        label4.place(x=50,y=460)
+    #     label4.configure(text=videofile)
+    #     label4.place(x=50,y=460)
     
                                                       
                                                       
@@ -345,6 +361,8 @@ def decrypt_img():
     
         
 def encrypt_video():
+    global cap
+
     key8=Fernet.generate_key()
     fernet8=Fernet(key8)
     with open("enckeyvideos.key","wb")as filenew8:
@@ -385,26 +403,53 @@ def decrypt_video():
     
     
 #-----------------------------------------------------------------------------------------------------------------------
-def playvideo():
-    cap = cv2.VideoCapture(mainvideofile1) 
-    while(cap.isOpened()):
-            ret, frame = cap.read() 
-            if ret == True: 
-                cv2.imshow("Video", frame) 
-                if cv2.waitKey(25) & 0xFF == ord('q'): 
-                    break
-            else: 
-                  break
-    
-        
-            
-         
-    cap.release() 
-    cv2.destroyAllWindows() 
-   
 
-    
-       
+playing = False
+cap = None
+label = None
+
+
+
+def Video_play():
+    global cap
+    global playing
+    if playing:
+        ret, frame = cap.read()
+        if ret:
+            frame = cv2.resize(frame, (700, 400))  # Resize the frame
+            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(cv2image)
+            imgtk = ImageTk.PhotoImage(image=img)
+            videolabelmain.imgtk = imgtk
+            videolabelmain.configure(image=imgtk)
+            videolabelmain.after(15, Video_play)
+        else:
+            # cap.release()
+         cap.release() 
+  
+
+def play():
+        global startpngfvideo 
+        startpngfvideo=startpng
+        global playing
+        if playing:
+             playing = False
+             
+             vidplaybtn44.configure(text='Play',image=startpng)
+             
+        
+        else:
+            playing = True
+            vidplaybtn44.configure(text='Pause',image=pausepng)
+            Video_play()
+
+
+        
+   
+def clear_video():
+    playing= False
+    videolabelmain.configure(image="")
+   
         
         
 mainframe = ctk.CTkFrame(master=window, width=250, height=750, corner_radius=20)
@@ -426,9 +471,9 @@ switch = customtkinter.CTkSwitch(master=mainframe, text="Light Mode", command=sw
 
 switch.place(x=15,y=600)
 textframe1 = ctk.CTkFrame(master=window, width=1000, height=700)
-filedialog1=ctk.CTkButton(master=textframe1,text="Select File",border_width=2,command=selectfile)
+filedialog1=ctk.CTkButton(master=textframe1,fg_color="transparent",text="Select File",border_width=2,command=selectfile)
 filedialog1.place(x=50,y=50)
-clearbutton=ctk.CTkButton(master=textframe1,text="Clear",border_width=2,command=clearselection)
+clearbutton=ctk.CTkButton(master=textframe1,fg_color="transparent",text="Clear",border_width=2,command=clearselection)
 clearbutton.place(x=210,y=50)
 
 combobox = ctk.CTkComboBox(master=textframe1, values=["AES", "RSA","BASE-64"])
@@ -442,9 +487,9 @@ decbutton = ctk.CTkButton(master=textframe1, text="Decrypt",fg_color="transparen
 decbutton.place(x=850, y=230)
 
 photosframe1 = ctk.CTkFrame(master=window, width=1000, height=700)
-filedialog2=ctk.CTkButton(master=photosframe1,text="Select Image",border_width=2,command=selectimage)
+filedialog2=ctk.CTkButton(master=photosframe1,text="Select Image",fg_color="transparent",border_width=2,command=selectimage)
 filedialog2.place(x=50,y=50)
-clearbutton2=ctk.CTkButton(master=photosframe1,text="Clear",border_width=2,command=clearimamge)
+clearbutton2=ctk.CTkButton(master=photosframe1,text="Clear",border_width=2,fg_color="transparent",command=clearimamge)
 clearbutton2.place(x=210,y=50)
 
 combobox2 = ctk.CTkComboBox(master=photosframe1, values=["AES", "RSA","BASE-64"])
@@ -460,13 +505,17 @@ label2=customtkinter.CTkLabel(master=photosframe1,text=None)
 
 
 Videoframe1=ctk.CTkFrame(master=window,width=1000,height=700)
-filedialog3=ctk.CTkButton(master=Videoframe1,text="Select Video",border_width=2,command=selectvideo)
+filedialog3=ctk.CTkButton(master=Videoframe1,text="Select Video",border_width=2,fg_color="transparent",height=30,command=selectvideo)
 filedialog3.place(x=50,y=50)
-clearbutton3=ctk.CTkButton(master=Videoframe1,text="Clear",border_width=2)
+clearbutton3=ctk.CTkButton(master=Videoframe1,text="Clear",fg_color="transparent",border_width=2,height=30,command=clear_video)
 clearbutton3.place(x=210,y=50)
 
-vidplaybtn=ctk.CTkButton(master=Videoframe1,text="Play",border_width=2,command=playvideo)
-vidplaybtn.place(x=200,y=100)
+vidplaybtn44=ctk.CTkButton(master=Videoframe1,text="Play",image=startpng,fg_color="transparent",border_width=2,command=play)
+vidplaybtn44.place(x=360,y=50)
+
+
+videolabelmain=ctk.CTkLabel(master=Videoframe1,width=200, height=300,text=None)
+videolabelmain.place(x=60,y=250)
 
 combobox3 = ctk.CTkComboBox(master=Videoframe1, values=["AES", "RSA","BASE-64"])
 combobox3.place(x=850,y=40)
@@ -475,13 +524,13 @@ encbutton3 = ctk.CTkButton(master=Videoframe1, text="Encrypt",fg_color="transpar
 encbutton3.place(x=850, y=130)
 decbutton3 = ctk.CTkButton(master=Videoframe1, text="Decrypt",fg_color="transparent",border_width=2,text_color="white",height=30,image=decimage1, width=130,command=decrypt_video)
 decbutton3.place(x=850, y=230)
-label4=customtkinter.CTkLabel(master=Videoframe1, text=" ", fg_color="transparent")
-
+label4=customtkinter.CTkLabel(master=Videoframe1, text="", fg_color="transparent")
+label4.place(x=50,y=600)
 
 Audioframe1=ctk.CTkFrame(master=window,width=1000,height=700)
-filedialog4=ctk.CTkButton(master=Audioframe1,text="Select Audio",border_width=2,command=selectaudio1)
+filedialog4=ctk.CTkButton(master=Audioframe1,fg_color="transparent",text="Select Audio",border_width=2,command=selectaudio1)
 filedialog4.place(x=50,y=50)
-clearbutton4=ctk.CTkButton(master=Audioframe1,text="Clear",border_width=2,command=clearaudio)
+clearbutton4=ctk.CTkButton(master=Audioframe1,fg_color="transparent",text="Clear",border_width=2,command=clearaudio)
 clearbutton4.place(x=210,y=50)
 
 combobox4 = ctk.CTkComboBox(master=Audioframe1, values=["AES", "RSA","BASE-64"])
