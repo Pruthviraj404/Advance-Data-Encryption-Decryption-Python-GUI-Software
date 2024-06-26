@@ -589,10 +589,10 @@ def destroy_overlay(event=None):
 window.bind('<Escape>', destroy_overlay)
         
    
-   
+#show warming   
 
 def show_warning():
-    messagebox.showwarning("Warning", "Please click on the overlay frame only!")
+    messagebox.showwarning("Warning", "Please click on the  overlays frames only!")
 
 
 
